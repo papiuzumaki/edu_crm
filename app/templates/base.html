@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Edu.CRM{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #f4f7fb;
+      --border: #d0dce8;
+      --accent: #0ea5e9;
+      --accent2: #2563eb;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #38bdf8;
+      --text: #0f172a;
+      --muted: #64748b;
+      --nav-bg: #0f172a;
+      --nav-text: #cbd5e1;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      background: var(--nav-bg);
+      border-bottom: 2px solid var(--accent);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-brand img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 6px;
+      padding: 3px 8px;
+    }
+
+    .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .nav-links a:hover { color: #fff; background: var(--accent2); }
+    .nav-logout a { color: #f87171 !important; }
+    .nav-logout a:hover { background: #ef4444 !important; color: #fff !important; }
+
+    .flashes { padding: 0.75rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .flash {
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-left: 3px solid;
+    }
+
+    .flash.success { background: #ecfdf5; border-color: var(--success); color: #065f46; }
+    .flash.danger  { background: #fef2f2; border-color: var(--danger);  color: #991b1b; }
+    .flash.warning { background: #fffbeb; border-color: var(--warning); color: #92400e; }
+    .flash.info    { background: #eff6ff; border-color: var(--info);    color: #1e40af; }
+
+    main { flex: 1; padding: 2rem; max-width: 1100px; width: 100%; margin: 0 auto; }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-body);
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all 0.15s;
+    }
+
+    .btn-primary { background: var(--accent2); color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-danger  { background: #fef2f2; color: var(--danger); border: 1px solid var(--danger); }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+    .btn-secondary { background: var(--border); color: var(--text); }
+    .btn-secondary:hover { background: #b8cedd; }
+
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    thead tr { background: var(--nav-bg); color: #fff; }
+    thead th {
+      padding: 0.9rem 1.2rem;
+      text-align: left;
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+    }
+
+    tbody tr { border-top: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:hover { background: #eef4fb; }
+    tbody td { padding: 0.85rem 1.2rem; }
+
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.95rem; }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 480px;
+    }
+
+    .form-group { margin-bottom: 1.2rem; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 0.6rem 0.9rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus { border-color: var(--accent); }
+    select option { background: var(--surface); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .stat-card.blue::before   { background: var(--accent); }
+    .stat-card.purple::before { background: var(--accent2); }
+    .stat-card.green::before  { background: var(--success); }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .stat-card.blue .stat-value   { color: var(--accent); }
+    .stat-card.purple .stat-value { color: var(--accent2); }
+    .stat-card.green .stat-value  { color: var(--success); }
+
+    .login-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .login-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 24px rgba(14,165,233,0.08);
+    }
+
+    .login-title {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .login-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 2px solid var(--border);
+      background: var(--surface);
+    }
+  </style>
+</head>
+<body>
+
+{% if session.get('user') %}
+<nav>
+  <a class="nav-brand" href="{{ url_for('dashboard.index') }}">
+    <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Edu.CRM" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+    <li><a href="{{ url_for('students.list_students') }}">Étudiants</a></li>
+    <li><a href="{{ url_for('teachers.list_teachers') }}">Enseignants</a></li>
+    <li><a href="{{ url_for('courses.list_courses') }}">Cours</a></li>
+    <li class="nav-logout"><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flashes">
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% block body %}
+<main>
+  {% block content %}{% endblock %}
+</main>
+{% endblock %}
+
+<footer>Edu.CRM &copy; 2024 — Projet Flask Blueprints</footer>
+
+</body>
+</html>

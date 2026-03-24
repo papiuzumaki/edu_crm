@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Cours — Edu.CRM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Cours</h1>
+  <a href="{{ url_for('courses.create_course') }}" class="btn btn-primary">+ Ajouter</a>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Titre</th>
+        <th>Enseignant</th>
+        <th>Étudiants inscrits</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if courses %}
+        {% for course in courses %}
+        <tr>
+          <td>{{ course.id }}</td>
+          <td>{{ course.title }}</td>
+          <td>
+            {% if course.teacher_id in teachers %}
+              {{ teachers[course.teacher_id].name }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td>
+            {% if course.student_ids %}
+              {% for sid in course.student_ids %}
+                <span style="display:inline-flex; align-items:center; gap:0.3rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:0.2rem 0.5rem; font-size:0.8rem; margin:0.1rem;">
+                  {{ (students[sid].prenom ~ ' ' ~ students[sid].nom) if sid in students else sid }}
+                  <a href="{{ url_for('courses.unassign_student', course_id=course.id, student_id=sid) }}" style="color:var(--danger); text-decoration:none; font-weight:700;" title="Désinscrire">✕</a>
+                </span>
+              {% endfor %}
+            {% else %}
+              <span style="color:var(--muted); font-size:0.85rem;">Aucun étudiant</span>
+            {% endif %}
+          </td>
+          <td style="display:flex; gap:0.5rem">
+            <a href="{{ url_for('courses.edit_course', course_id=course.id) }}" class="btn btn-secondary">Modifier</a>
+            <a href="{{ url_for('courses.assign_student', course_id=course.id) }}" class="btn btn-secondary">Inscrire</a>
+            <a href="{{ url_for('courses.delete_course', course_id=course.id) }}" class="btn btn-danger" onclick="return confirm('Supprimer le cours « {{ course.title }} » ?')">Supprimer</a>
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" class="empty-state">Aucun cours pour l'instant.</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

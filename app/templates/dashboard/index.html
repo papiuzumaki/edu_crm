@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Edu.CRM{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>Dashboard</h1>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card blue">
+    <div class="stat-icon" style="background:#e0f2fe; color:#0ea5e9;">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <div>
+      <div class="stat-label">Étudiants</div>
+      <div class="stat-value">{{ stats.nb_students }}</div>
+    </div>
+    <a href="{{ url_for('students.list_students') }}" class="stat-link">Voir la liste →</a>
+  </div>
+
+  <div class="stat-card purple">
+    <div class="stat-icon" style="background:#dbeafe; color:#2563eb;">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div>
+      <div class="stat-label">Enseignants</div>
+      <div class="stat-value">{{ stats.nb_teachers }}</div>
+    </div>
+    <a href="{{ url_for('teachers.list_teachers') }}" class="stat-link">Voir la liste →</a>
+  </div>
+
+  <div class="stat-card green">
+    <div class="stat-icon" style="background:#d1fae5; color:#10b981;">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    </div>
+    <div>
+      <div class="stat-label">Cours</div>
+      <div class="stat-value">{{ stats.nb_courses }}</div>
+    </div>
+    <a href="{{ url_for('courses.list_courses') }}" class="stat-link">Voir la liste →</a>
+  </div>
+</div>
+
+<!-- Actions rapides -->
+<div style="max-width:600px; margin:0.5rem auto 0;">
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem;">
+    <h2 style="font-family:var(--font-head); font-size:1rem; font-weight:700; margin-bottom:1.25rem; color:var(--text);">Actions rapides</h2>
+    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+      <a href="{{ url_for('students.create_student') }}" style="display:flex; align-items:center; gap:1rem; padding:0.9rem 1rem; background:#fff; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--text); transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 2px 12px rgba(14,165,233,0.12)'" onmouseout="this.style.boxShadow='none'">
+        <span style="width:36px; height:36px; background:#e0f2fe; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#0ea5e9; flex-shrink:0;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        </span>
+        <div>
+          <div style="font-weight:600; font-size:0.9rem;">Ajouter un étudiant</div>
+          <div style="font-size:0.78rem; color:var(--muted);">Enregistrer un nouvel étudiant</div>
+        </div>
+        <span style="margin-left:auto; color:var(--muted);">→</span>
+      </a>
+
+      <a href="{{ url_for('teachers.create_teacher') }}" style="display:flex; align-items:center; gap:1rem; padding:0.9rem 1rem; background:#fff; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--text); transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 2px 12px rgba(37,99,235,0.12)'" onmouseout="this.style.boxShadow='none'">
+        <span style="width:36px; height:36px; background:#dbeafe; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#2563eb; flex-shrink:0;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <div>
+          <div style="font-weight:600; font-size:0.9rem;">Ajouter un enseignant</div>
+          <div style="font-size:0.78rem; color:var(--muted);">Enregistrer un nouvel enseignant</div>
+        </div>
+        <span style="margin-left:auto; color:var(--muted);">→</span>
+      </a>
+
+      <a href="{{ url_for('courses.create_course') }}" style="display:flex; align-items:center; gap:1rem; padding:0.9rem 1rem; background:#fff; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--text); transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 2px 12px rgba(16,185,129,0.12)'" onmouseout="this.style.boxShadow='none'">
+        <span style="width:36px; height:36px; background:#d1fae5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#10b981; flex-shrink:0;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </span>
+        <div>
+          <div style="font-weight:600; font-size:0.9rem;">Créer un cours</div>
+          <div style="font-size:0.78rem; color:var(--muted);">Ajouter un nouveau cours</div>
+        </div>
+        <span style="margin-left:auto; color:var(--muted);">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .stat-card > div { flex: 1; }
+  .stat-link {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent2);
+    text-decoration: none;
+    border-top: 1px solid var(--border);
+    padding-top: 0.6rem;
+  }
+  .stat-link:hover { text-decoration: underline; }
+</style>
+
+
+{% endblock %}
