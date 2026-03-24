@@ -14,40 +14,7 @@ Application de gestion scolaire développée avec Flask et Blueprints dans le ca
 - Ajouter, modifier et supprimer des enseignants
 - Créer des cours, inscrire et désinscrire des étudiants
 - Dashboard avec les statistiques générales
-
-## Lancer le projet
-
-**1. Cloner le repo et se placer dedans**
-```bash
-git clone <lien-du-repo>
-cd edu_crm
-```
-
-**2. Créer l'environnement virtuel**
-```bash
-python3 -m venv venv
-```
-
-**3. Activer l'environnement virtuel**
-```bash
-# Mac / Linux
-source venv/bin/activate
-
-# Windows
-venv\Scripts\activate
-```
-
-Une fois activé, tu verras `(venv)` apparaître au début de ta ligne de commande.
-
-**4. Installer les dépendances**
-```bash
-pip install flask
-```
-
-**5. Lancer l'application**
-```bash
-python run.py
-```
+---
 
 **6. Ouvrir dans le navigateur**
 ```
